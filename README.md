@@ -10,3 +10,6 @@ The original data used to build this training is available at: https://www.dgt.e
 
 ## Data transformation
 For a more meaningful learning experience, the data has been reshaped for this training session from a plain-text format to a json format, in order to learn how we can work with semi-structured data in Snowflake.
+
+## Data Dictionary
+The data dictionary can be found at https://www.dgt.es/export/sites/web-DGT/.galleries/downloads/dgt-en-cifras/matraba/MATRICULACIONES_MATRABA.pdf
