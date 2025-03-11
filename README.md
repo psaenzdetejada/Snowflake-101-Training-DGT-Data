@@ -8,5 +8,5 @@ Furthermore, we need to create and populate dimension tables to enrich the raw r
 ## Original data
 The original data used to build this training is available at: https://www.dgt.es/menusecundario/dgt-en-cifras/matraba-listados/matriculaciones-automoviles-diario.html
 
-## Previous transformation
+## Data transformation
 For a more meaningful learning experience, the data has been reshaped for this training session from a plain-text format to a json format, in order to learn how we can work with semi-structured data in Snowflake.
