@@ -1,0 +1,163 @@
+name: semantic_model_matriculaciones
+tables:
+  - name: CURATED_MATRICULACIONES
+    description: Matriculaciones diarias de vehículos en España.
+    base_table:
+      database: DGT1
+      schema: MATRICULACIONES
+      table: CURATED_MATRICULACIONES
+    primary_key:
+      columns:
+        - FEC_MATRICULA
+        - COD_TIPO
+        - MARCA_ITV
+    time_dimensions:
+      - name: FECHA_MATRICULACION
+        expr: FECHA_MATRICULACION
+        description: Fecha en la que se ha matriculado un vehículo.
+        unique: false
+        data_type: date
+    measures:
+      - name: matriculaciones
+        expr: COUNT(BASTIDOR)
+        description: Número de matriculaciones en una fecha determinada
+        synonyms: ["ventas", "matriculas"]
+        data_type: number
+    dimensions:
+      - name: PROVINCIA_MATRICULACION
+        expr: PROVINCIA_MATRICULACION
+        data_type: varchar
+        description: Provincia donde se ha matriculado el vehículo
+        sample_values:
+          - Madrid
+          - Barcelona
+          - Toledo
+          - Tarragona
+          - Lleida
+          - Sevilla
+          - Valencia
+          - Granada
+      - name: MARCA
+        expr: MARCA
+        data_type: varchar
+        description: Marca del vehículo
+        synonyms: ["marca", "marca de vehículo"]
+        sample_values:
+          - TOYOTA
+          - RENAULT
+          - PEUGEOT
+          - MERCEDES-BENZ
+          - BMW
+          - CITROEN
+          - SEAT
+          - KIA
+          - HYUNDAI
+          - AUDI
+          - DACIA
+          - HONDA
+          - FORD
+          - SKODA
+          - OPEL
+          - NISSAN
+          - YAMAHA
+          - FIAT
+          - MG
+          - VOLVO
+          - CUPRA
+          - MAZDA
+          - KYMCO
+          - TESLA
+          - PIAGGIO
+          - SYM
+          - JEEP
+          - MINI
+          - SUZUKI
+          - LEXUS
+          - KAWASAKI
+          - ZONTES
+          - IVECO
+          - KTM
+          - VOGE
+          - PORSCHE
+          - MITSUBISHI
+          - LAND ROVER
+          - APRILIA
+          - MAN
+          - SCANIA
+          - DAF
+          - OMODA
+          - VOLKSWAGEN
+          - SSANGYONG
+          - KEEWAY
+          - LECITRAILER
+          - RIEJU
+          - SCHMITZ CARGOBULL
+          - TRIUMPH
+          - ALFA ROMEO
+          - BYD
+          - CFMOTO
+          - SILENCE
+          - JOHN DEERE
+          - LYNK&CO
+          - BENELLI
+          - DS
+      - name: MODELO_ITV
+        expr: MODELO_ITV
+        data_type: varchar
+        description: Modelo del vehículo
+        synonyms: ["modelo"]
+      - name: TIPO_VEHICULO
+        expr: TIPO_VEHICULO
+        data_type: varchar
+        sample_values:
+          - Turismo
+          - Motocicleta de 2 ruedas sin sidecar
+          - Furgoneta
+          - Vehículo mixto adaptable
+          - Todo terreno
+          - Tractocamión
+          - Ciclomotor de 2 ruedas
+          - Camión caja
+          - Tractor
+          - Vivienda
+          - Vehículo especial
+          - Maq. agrícola arrastada de 1 eje
+          - Camión furgón
+          - Camión frigorífico
+          - Autobús
+          - Semirremolque caja
+          - Semirremolque frigorífico
+          - Maq. agrícola arrastrada de 2 ejes
+          - Automóvil de 3 ruedas
+          - Carretilla elevadora
+          - Camión articulado volquete
+          - Cuatriciclo ligero
+          - Remolque
+          - Camión portacontenedores
+          - Maquinaria agrícola automotriz
+          - Ambulancia
+      - name: COD_TIPO
+        expr: COD_TIPO
+        data_type: varchar
+        description: Codigo del tipo de vehículo
+verified_queries:
+ # For eval sample nlimtiaco_sc_3__0
+  - name: "matriculaciones mensuales de turismos en 2024"
+    question: "cuantos turismos se matricularon mensualmente en 2024"
+    use_as_onboarding_question: true
+    verified_at: 1714752498
+    verified_by: pablo
+    sql: "SELECT
+    DATE_TRUNC('MONTH', r.FECHA_MATRICULACION) AS mes,
+    COUNT(BASTIDOR) AS Matriculaciones,
+    TIPO_VEHICULO AS Vehiculo
+    FROM
+    dgt1.matriculaciones.curated_matriculaciones
+    WHERE
+    FECHA_MATRICULACION BETWEEN '2024-01-01'
+    AND '2024-12-31'
+    AND TIPO_VEHICULO = 'Turismo'
+    group by 1,3
+    ORDER BY
+    mes DESC;"
+custom_instructions: "Responde siempre en español. Siempre que se pregunte por porcentajes, multiplica el resultado por 100. Redondea cualquier resultado decimal a 2 decimales al mostrar el output"
